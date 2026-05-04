@@ -1,16 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 typedef struct {
 	char name[50];
 	char phone[15];
 }Contact;
-
 Contact *contacts = NULL;
 int count = 0;
 int capacity = 2;
-
 void addContact(char *name, char *phone){
 	Contact *temp;
 	if(count==capacity){
@@ -29,7 +26,6 @@ void addContact(char *name, char *phone){
 	printf("Contact is added!\n");
 	count++;
 }
-
 void listContact(){
 	if(count == 0){
 		printf("No Contacts!\n");
@@ -39,7 +35,6 @@ void listContact(){
 		printf("[%d] Name: %-20s Phone: %s\n",i+1,contacts[i].name, contacts[i].phone);
 	}
 }
-
 void searchContact(char *name){
 	for (int i = 0; i<count; i++){
 		if(strcmp(contacts[i].name, name)==0){
@@ -50,7 +45,6 @@ void searchContact(char *name){
 	}
 	printf("Contact With Name %s Not Found!\n",name);
 }
-
 void deleteContact(char *name){
 	for (int i = 0; i<count; i++){
 		if(strcmp(contacts[i].name, name)==0){
@@ -62,7 +56,6 @@ void deleteContact(char *name){
 	}
 	printf("Contact With Name %s Not Found!\n",name);
 }
-
 void saveContacts(){
 	FILE *f = fopen("contacts.txt","w");
 	if(!f) {
@@ -75,7 +68,6 @@ void saveContacts(){
 	}
 	fclose(f);
 }
-
 void loadContacts(){
 	FILE *f = fopen("contacts.txt","r");
 	if(!f){
@@ -96,7 +88,6 @@ void loadContacts(){
 	}
 	fclose(f);
 }
-
 int main(){
 	contacts = malloc(capacity*sizeof(Contact));
 	if(contacts == NULL){
