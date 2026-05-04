@@ -63,12 +63,48 @@ void deleteContact(char *name){
 	printf("Contact With Name %s Not Found!\n",name);
 }
 
+void saveContacts(){
+	FILE *f = fopen("contacts.txt","w");
+	if(!f) {
+		printf("File saving failed!\n");
+		return;
+	}
+	fprintf(f,"%d\n",count);
+	for(int i=0;i<count;i++){
+		fprintf(f,"%s\n%s\n",contacts[i].name, contacts[i].phone);
+	}
+	fclose(f);
+}
+
+void loadContacts(){
+	FILE *f = fopen("contacts.txt","r");
+	if(!f){
+		printf("File loading failed!\n");
+		return;
+	}
+	if(fscanf(f,"%d",&count)!=1) count =0;
+	capacity = count + 2;
+	Contact *temp = realloc(contacts, capacity*sizeof(Contact));
+	if(temp==NULL){
+		printf("Memory allocation failed!\n");
+		return;
+	}
+	contacts = temp;
+	for(int i = 0; i<count; i++){
+		fscanf(f, " %[^\n]", contacts[i].name);
+  	    fscanf(f, " %[^\n]", contacts[i].phone);
+	}
+	fclose(f);
+}
+
 int main(){
 	contacts = malloc(capacity*sizeof(Contact));
 	if(contacts == NULL){
 		printf("Memory allocation failed!\n");
 		return 1;
 	}
+	
+	loadContacts();
 	
 	int choice=0;
 	
@@ -117,6 +153,7 @@ int main(){
 				break;
 			}
 			case 5:{
+				saveContacts();
 				free(contacts);
 				printf("Thank You!\n");
 				printf("-----------------------------\n");
